@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "baseUrl": "./",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [],
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/test.ts",
+    "src/**/*.spec.ts"
+  ]
+}
