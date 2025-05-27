@@ -1,0 +1,59 @@
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Toolbox -->
+        <div class="col-md-4">
+            <h4>Toolbox</h4>
+            <div cdkDropList id="toolboxList" #toolboxList="cdkDropList" [cdkDropListData]="availableFields"
+                [cdkDropListConnectedTo]="[canvasList]" class="list-group">
+                <div class="list-group-item" *ngFor="let field of availableFields" cdkDrag>
+                    {{ field.label }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Drop Zone -->
+        <div class="col-md-8">
+            <h4>Form Canvas</h4>
+            <div cdkDropList id="canvasList" #canvasList="cdkDropList" [cdkDropListData]="formFields"
+                [cdkDropListConnectedTo]="[toolboxList]" (cdkDropListDropped)="drop($event)"
+                class="p-3 border bg-light rounded" style="min-height: 300px;">
+                <div class="card mb-2 p-3" *ngFor="let field of formFields">
+                    <form class="row g-2">
+                        <!-- Label Input -->
+                        <div class="col-md-4">
+                            <label class="form-label">Label</label>
+                            <input type="text" class="form-control" [(ngModel)]="field.label"
+                                name="label_{{ field.name }}" />
+                        </div>
+
+                        <!-- Options Input for select type -->
+                        <div class="col-md-6" *ngIf="field.type === 'select'">
+                            <label class="form-label">Options (comma separated)</label>
+                            <input type="text" class="form-control" [(ngModel)]="field.optionsStr"
+                                name="options_{{ field.name }}" (ngModelChange)="updateOptions(field)" />
+                        </div>
+
+                        <!-- Type (readonly display) -->
+                        <div class="col-md-2">
+                            <label class="form-label">Type</label>
+                            <input type="text" class="form-control" [value]="field.type" disabled />
+                        </div>
+                    </form>
+                </div>
+
+
+                <div *ngIf="formFields.length === 0" class="text-muted text-center pt-5">
+                    Drag and drop form fields here
+                </div>
+            </div>
+
+            <button class="btn btn-success mt-3" (click)="saveForm()" [disabled]="formFields.length === 0">
+                Save & Render Form
+            </button>
+
+            <div class="mt-4" *ngIf="saved">
+                <app-renderer [fields]="formFields"></app-renderer>
+            </div>
+        </div>
+    </div>
+</div>
